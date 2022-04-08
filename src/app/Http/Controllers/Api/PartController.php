@@ -37,14 +37,9 @@ class PartController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    // public function show(Part $part)
-    public function show($id)
+    public function show(Part $part)
     {
-        $part = Part::find($id);
-        // return response()->json($part);
-        $info = phpinfo();
-        return $info;
-        // return $part;
+        return $part;
     }
 
     /**
