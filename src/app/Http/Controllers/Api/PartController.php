@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Part;
@@ -13,11 +13,10 @@ class PartController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Part $parts)
+    public function index()
     {
-        // $parts = Part::all();
-        // return response()->json($parts);
-        return $parts;
+        $parts = Part::all();
+        return response()->json($parts);
     }
 
     /**
