@@ -8,4 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class PartHistory extends Model
 {
     use HasFactory;
+
+    const UPDATED_AT = null;
+
+    protected $fillable = [
+        'user_id',
+        'part_id',
+    ];
+
+    protected $guarded = [
+        'id',
+    ];
 }

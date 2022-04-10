@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\PartHistory;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class PartHistoryController extends Controller
@@ -25,7 +27,10 @@ class PartHistoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $part_history = new PartHistory();
+        $input = $request->all();
+        $res = $part_history->fill($input)->save();
+        return json_encode(['result' => $res]);
     }
 
     /**
