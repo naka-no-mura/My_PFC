@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\PartHistory;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PartHistoryController extends Controller
 {
@@ -16,7 +17,8 @@ class PartHistoryController extends Controller
      */
     public function index()
     {
-        //
+      $part_histories = PartHistory::select('id', 'part_id', DB::raw("DATE_FORMAT(created_at, '%Y-%m-%d') AS date"))->get();
+      return response()->json($part_histories);
     }
 
     /**
@@ -27,10 +29,20 @@ class PartHistoryController extends Controller
      */
     public function store(Request $request)
     {
+      // 今日の記録がまだない場合のみ登録
+      $today = Carbon::today()->format('Y-m-d');
+      $today_part_history = PartHistory::whereDate('created_at', $today)->first();
+
+      if (empty($today_part_history)) {
         $part_history = new PartHistory();
         $input = $request->all();
         $res = $part_history->fill($input)->save();
-        return json_encode(['result' => $res]);
+        $id = $part_history->id;
+        return response()->json(['result' => $res, 'id' => $id]);
+
+      } else {
+        return response()->json(['result' => 'today is already registered']);
+      }
     }
 
     /**
