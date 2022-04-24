@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Training;
+use App\Models\TrainingHistory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
-class TrainingController extends Controller
+class TrainingHistoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +17,11 @@ class TrainingController extends Controller
      */
     public function index()
     {
-        $trainings = Training::select('id', 'name')->get();
-        return response()->json($trainings);
+        $training_histories = TrainingHistory::with('training:id,name')
+                                ->where('user_id', 1)
+                                ->select('id', 'training_id', 'weight', 'repetition', 'set', 'is_done', DB::raw("DATE_FORMAT(updated_at, '%Y/%m/%d') AS date"))
+                                ->get();
+        return response()->json($training_histories);
     }
 
     /**
@@ -27,9 +32,9 @@ class TrainingController extends Controller
      */
     public function store(Request $request)
     {
-        $training = new Training();
-        $res = $training->fill($request->all())->save();
-        return response()->json(['message' => $res, 'id' => $training->id]);
+        $training_history = new TrainingHistory();
+        $res = $training_history->fill($request->all())->save();
+        return response()->json(['message' => $res, 'id' => $training_history->id]);
     }
 
     /**
@@ -52,8 +57,8 @@ class TrainingController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $training = Training::find($id);
-        $res = $training->fill($request->all())->save();
+        $training_history = TrainingHistory::find($id);
+        $res = $training_history->fill($request->all())->save();
         return response()->json(['message' => $res]);
     }
 
@@ -65,13 +70,13 @@ class TrainingController extends Controller
      */
     public function destroy($id)
     {
-        $training = Training::find($id);
-        $db_user_id = $training->user_id;
+        $training_history = TrainingHistory::with('training:id,user_id')->find($id);
+        $db_user_id = $training_history->training->user_id;
 
         // [add]リクエストしてきたユーザーと登録されているユーザーが一致したら削除
         $user_id = 1;
         if ($user_id === $db_user_id) {
-          $res = $training->delete();
+          $res = $training_history->delete();
         } else {
           $res = 'This ID is not yours';
         }

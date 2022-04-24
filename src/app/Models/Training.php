@@ -19,4 +19,24 @@ class Training extends Model
       'created_at',
       'updated_at'
     ];
+
+    /**
+     * 各トレーニング履歴
+     *
+     * @return void
+     */
+    public function trainingHistory()
+    {
+      return $this->hasMany(TrainingHistory::class);
+    }
+
+    /**
+     * ユーザーのトレーニング
+     *
+     * @return void
+     */
+    public function user()
+    {
+      return $this->belongsTo(User::class);
+    }
 }
