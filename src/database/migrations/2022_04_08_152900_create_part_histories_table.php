@@ -17,7 +17,7 @@ class CreatePartHistoriesTable extends Migration
             $table->id();
             $table->foreignId('part_id')->constrained('parts')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->date('finished_at');
+            $table->timestamps();
         });
     }
 
