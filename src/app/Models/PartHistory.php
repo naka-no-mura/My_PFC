@@ -9,8 +9,6 @@ class PartHistory extends Model
 {
     use HasFactory;
 
-    const UPDATED_AT = null;
-
     protected $fillable = [
         'user_id',
         'part_id',
@@ -18,6 +16,7 @@ class PartHistory extends Model
 
     protected $guarded = [
         'id',
-        'created_at'
+        'created_at',
+        'updated_at'
     ];
 }

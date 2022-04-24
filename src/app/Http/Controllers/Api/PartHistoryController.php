@@ -29,19 +29,30 @@ class PartHistoryController extends Controller
      */
     public function store(Request $request)
     {
-      // 今日の記録がまだない場合のみ登録
+      // 今日の記録が登録済みか判断
       $today = Carbon::today()->format('Y-m-d');
       $today_part_history = PartHistory::whereDate('created_at', $today)->first();
 
+      // 登録なし→登録
       if (empty($today_part_history)) {
         $part_history = new PartHistory();
-        $input = $request->all();
-        $res = $part_history->fill($input)->save();
-        $id = $part_history->id;
-        return response()->json(['result' => $res, 'id' => $id]);
+        $res = $part_history->fill($request->all())->save();
+        return response()->json(['message' => $res, 'id' => $part_history->id]);
 
+      // 登録済み→更新
       } else {
-        return response()->json(['result' => 'today is already registered']);
+        $db_part_id = $today_part_history->part_id;
+        $posted_part_id = intval($request->part_id);
+
+        // 同じpart_id→何もしない
+        if ($db_part_id === $posted_part_id) {
+          return response()->json(['message' => 'The same part ID is already registered today']);
+
+          // 異なるpart_id→更新
+        } else {
+          // return redirect()->action([PartHistoryController::class, 'update'], ['part' => $today_part_history]);
+          return response()->json(['message' => 'you have to update']);
+        }
       }
     }
 
@@ -65,7 +76,9 @@ class PartHistoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $part_history = PartHistory::find($id);
+        $res = $part_history->fill($request->all())->save();
+        return response()->json(['message' => $res]);
     }
 
     /**
