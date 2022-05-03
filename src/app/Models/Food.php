@@ -24,4 +24,12 @@ class Food extends Model
       'created_at',
       'updated_at'
     ];
+
+    /**
+     * food履歴
+     */
+    public function foodHistories()
+    {
+      return $this->hasMany(FoodHistory::class);
+    }
 }
