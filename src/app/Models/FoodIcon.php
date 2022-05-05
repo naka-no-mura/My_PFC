@@ -18,4 +18,13 @@ class FoodIcon extends Model
       'created_at',
       'updated_at'
     ];
+
+    /**
+     * フードアイコンを持っているフード
+     */
+    public function foods()
+    {
+      return $this->belongsToMany(Food::class, 'food_food_icon', 'food_icon_id', 'food_id')
+                  ->withTimestamps();
+    }
 }

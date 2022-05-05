@@ -16,7 +16,8 @@ class Food extends Model
       'name',
       'protein',
       'fat',
-      'carbohydrate'
+      'carbohydrate',
+      'food_icon_id'
     ];
 
     protected $guarded = [
@@ -31,5 +32,14 @@ class Food extends Model
     public function foodHistories()
     {
       return $this->hasMany(FoodHistory::class);
+    }
+
+    /**
+     * foodを持っているフードアイコン
+     */
+    public function foodIcons()
+    {
+      return $this->belongsToMany(FoodIcon::class, 'food_food_icon', 'food_id', 'food_icon_id')
+                  ->withTimestamps();
     }
 }

@@ -16,6 +16,7 @@ class FoodController extends Controller
     public function index()
     {
         $foods = Food::where('user_id', 1)
+                    ->with('foodIcons')
                     ->select('id', 'name', 'protein', 'fat', 'carbohydrate')
                     ->get();
         return response()->json(['message' => true, 'foods' => $foods]);
@@ -30,7 +31,13 @@ class FoodController extends Controller
     public function store(Request $request)
     {
         $food = new Food();
-        $res = $food->fill($request->all())->save();
+        $food->user_id      = $request->user_id;
+        $food->name         = $request->name;
+        $food->protein      = $request->protein;
+        $food->fat          = $request->fat;
+        $food->carbohydrate = $request->carbohydrate;
+        $res = $food->save();
+        $food->foodIcons()->attach($request->food_icon_id);
         return response()->json(['message' => $res, 'id' => $food->id]);
     }
 
@@ -42,7 +49,7 @@ class FoodController extends Controller
      */
     public function show($id)
     {
-        $food = Food::find($id);
+        $food = Food::find($id)->foodIcons;
         return response()->json(['message' => true, 'food' => $food]);
     }
 
@@ -56,7 +63,22 @@ class FoodController extends Controller
     public function update(Request $request, $id)
     {
         $food = Food::find($id);
-        $res = $food->fill($request->all())->save();
+        if (!empty($request->name)) {
+          $food->name         = $request->name;
+        }
+        if (!empty($request->protein)) {
+          $food->protein      = $request->protein;
+        }
+        if (!empty($request->fat)) {
+          $food->fat          = $request->fat;
+        }
+        if (!empty($request->carbohydrate)) {
+          $food->carbohydrate = $request->carbohydrate;
+        }
+        $res = $food->save();
+        if (!empty($request->food_icon_id)) {
+          $food->foodIcons()->sync($request->food_icon_id);
+        }
         return response()->json(['message' => $res]);
     }
 
