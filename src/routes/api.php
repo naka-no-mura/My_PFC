@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\FoodController;
+use App\Http\Controllers\Api\FoodHistoryController;
 use App\Http\Controllers\Api\PartController;
 use App\Http\Controllers\Api\PartHistoryController;
 use App\Http\Controllers\Api\TrainingController;
@@ -27,4 +29,6 @@ Route::apiResource('parts', PartController::class, ['only' => ['index', 'show']]
 Route::apiResource('history/parts', PartHistoryController::class);
 Route::apiResource('trainings', TrainingController::class);
 Route::apiResource('history/trainings', TrainingHistoryController::class);
+Route::apiResource('foods', FoodController::class);
+Route::apiResource('history/foods', FoodHistoryController::class);
 Route::apiResource('users', UserController::class);
