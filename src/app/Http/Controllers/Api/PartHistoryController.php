@@ -17,7 +17,7 @@ class PartHistoryController extends Controller
      */
     public function index()
     {
-      $part_histories = PartHistory::select('id', 'part_id', DB::raw("DATE_FORMAT(created_at, '%Y-%m-%d') AS date"))->get();
+      $part_histories = PartHistory::select('id', 'part_id', DB::raw("DATE_FORMAT(created_at, '%Y/%m/%d') AS date"))->get();
       return response()->json($part_histories);
     }
 

@@ -5,13 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PartHistory extends Model
+class TrainingHistory extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'user_id',
-        'part_id',
+        'training_id',
+        'weight',
+        'repetition',
+        'set',
+        'is_done'
     ];
 
     protected $guarded = [
@@ -20,8 +24,13 @@ class PartHistory extends Model
         'updated_at'
     ];
 
-    public function user()
+    /**
+     * トレーニング履歴
+     *
+     * @return void
+     */
+    public function training()
     {
-      return $this->belongsTo(User::class);
+      return $this->belongsTo(Training::class);
     }
 }
