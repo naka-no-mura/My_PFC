@@ -15,8 +15,9 @@ class CreateTrainingHistoriesTable extends Migration
     {
         Schema::create('training_histories', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('training_id')->constrained('trainings')->onDelete('cascade');
-            $table->integer('weight')->default(0); // 0：自重
+            $table->float('weight')->default(0); // 0：自重
             $table->integer('repetition')->default(0);
             $table->integer('set')->default(0);
             $table->integer('is_done')->default(0);
