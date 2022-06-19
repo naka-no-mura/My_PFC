@@ -17,9 +17,9 @@ class CreateFoodsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('name');
-            $table->integer('protein')->default(0);
-            $table->integer('fat')->default(0);
-            $table->integer('carbohydrate')->default(0);
+            $table->float('protein')->default(0);
+            $table->float('fat')->default(0);
+            $table->float('carbohydrate')->default(0);
             $table->timestamps();
         });
     }

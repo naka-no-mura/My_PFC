@@ -15,7 +15,7 @@ class CreateFoodIconsTable extends Migration
     {
         Schema::create('food_icons', function (Blueprint $table) {
             $table->id();
-            $table->string('path');
+            $table->string('name', 255);
             $table->timestamps();
         });
     }

@@ -72,4 +72,14 @@ class User extends Authenticatable
     {
       return $this->hasMany(PartHistory::class);
     }
+
+    /**
+     * 画像
+     *
+     * @return void
+     */
+    public function image()
+    {
+      return $this->hasMany(Image::class);
+    }
 }
