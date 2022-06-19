@@ -32,8 +32,8 @@ class ImageController extends Controller
         if (empty($image)) {
           return response()->json(['message' => 'image file is empty']);
         } else {
-          $path = $image->store('img', 'public');
-          $res = Image::create(['path' => $path]);
+          $path = $image->store('img/ideal', 'public');
+          $res = Image::create(['name' => $path]);
           return response()->json(['message' => $res]);
         }
     }
@@ -46,7 +46,8 @@ class ImageController extends Controller
      */
     public function show($id)
     {
-        //
+        $image = Image::find($id)->all();
+        return response()->json(['message' => true, 'image' => $image]);
     }
 
     /**
